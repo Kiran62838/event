@@ -132,7 +132,7 @@ app.delete('/events/:id', function (req, res) {
 
 const PORT = 4004;
 app.listen(PORT, function () {
-  console.log("API server is running ....");
+  console.log("API server is running .....");
 });
 
 
