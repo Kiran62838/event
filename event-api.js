@@ -50,6 +50,7 @@ app.get('/events', function (req, res) {
  * @apiParam {Number} id Event's unique ID.
  *
  * @apiSuccess {Object} event Event information.
+ * 
  */
 app.get('/events/:id', function (req, res) {
   const eventId = req.params.id;
