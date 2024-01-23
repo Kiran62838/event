@@ -1,17 +1,17 @@
 // event-db.js
 
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('eventDB');
 
 
 
-module.exports = db;
 
 // api-events.js
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const path = require('path');
+
 
 
 const app = express();
@@ -28,6 +28,24 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+
+app.use(bodyParser.json());
+const clientPath = path.join(__dirname, '..', 'script');
+
+app.use(express.static(clientPath));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(upload.array());
+
+const db = new sqlite3.Database('./eventsDB.db', sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('>>>>Connected<<<<');
+});
+
+
+module.exports = db;
 
 /**
  * @api {get} /events Get all events
@@ -131,10 +149,9 @@ app.delete('/events/:id', function (req, res) {
   });
 });
 
-const PORT = 4004;
+const PORT = 4009;
 app.listen(PORT, function () {
   console.log("API server is running .....");
 });
-
 
 
